@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>StationBuilder</title>
+    <script src="js/greensock/TweenLite.js"></script>
+    <script src="js/aframe.js"></script>
+    <script src="js/components/tube.js"></script>
+</head>
+<body>
+<div id="terminal">
+
+</div>
+<a-scene antialias="true">
+    <a-entity id="station" rotation="60 40 0">
+        <a-entity id="body">
+            <a-entity id="tube1" tube="radius:3; innerRadius:2; length:0.2; segments:16"></a-entity>
+            <a-box width="0.1" height="0.1" depth="0.1" position="0 0 -1.4"></a-box>
+            <a-animation attribute="rotation"
+                         dur="10000"
+                         easing="linear"
+                         fill="forwards"
+                         to="0 360 0"
+                         repeat="indefinite"></a-animation>
+        </a-entity>
+    </a-entity>
+    <a-sky color="#ECECEC"></a-sky>
+    <a-entity id="player" position="0 0 5">
+        <a-camera user-height="0" wsad-controls-enabled></a-camera>
+    </a-entity>
+</a-scene>
+
+<script type="application/javascript">
+    var scene = document.querySelector('a-scene');
+    if (scene.hasLoaded) {
+        run();
+    } else {
+        scene.addEventListener('loaded', run);
+    }
+    function run() {
+        var tube = scene.querySelector('#tube1');
+        var tweenValues = {
+            radius: tube.getAttribute("tube").radius,
+            innerRadius: tube.getAttribute("tube").innerRadius
+        };
+    }
+</script>
+
+</body>
+</html>
