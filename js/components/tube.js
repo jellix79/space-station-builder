@@ -2,6 +2,8 @@
  * Created by jellix on 07.01.2017.
  */
 AFRAME.registerComponent('tube', {
+    multiple:true,
+
     schema: {
         radius: { type: "number", default: 1 },
         innerRadius: { type: "number", default: 0.5 },
@@ -13,11 +15,13 @@ AFRAME.registerComponent('tube', {
         this.clear();
         var i, temp;
 
-        this.outerPath = [new THREE.Vector2( this.data.radius, 0 ), new THREE.Vector2( this.data.radius, this.data.length )];
+        this.outerPath = [new THREE.Vector2( this.data.radius, -this.data.length/2 ), new THREE.Vector2( this.data.radius, this.data.length/2 )];
         this.outerLathe = new THREE.LatheGeometry( this.outerPath, this.data.segments );
+        this.outerLathe.rotateX(Math.PI/2);
 
-        this.innerPath = [new THREE.Vector2( this.data.innerRadius, 0 ), new THREE.Vector2( this.data.innerRadius, this.data.length )];
+        this.innerPath = [new THREE.Vector2( this.data.innerRadius, -this.data.length/2 ), new THREE.Vector2( this.data.innerRadius, this.data.length/2 )];
         this.innerLathe = new THREE.LatheGeometry( this.innerPath, this.data.segments );
+        this.innerLathe.rotateX(Math.PI/2);
         //flip faces of the inner lathe
         for ( i = 0; i < this.innerLathe.faces.length; i ++ ) {
             var face = this.innerLathe.faces[ i ];
@@ -35,11 +39,11 @@ AFRAME.registerComponent('tube', {
         }
 
         this.ringStart = new THREE.RingGeometry( this.data.innerRadius, this.data.radius, this.data.segments, 0, 0, Math.PI * 2 );
-        this.ringStart.rotateX(Math.PI/2);
+        this.ringStart.rotateY(Math.PI);
+        this.ringStart.translate(0, 0, -this.data.length/2);
 
         this.ringEnd = new THREE.RingGeometry( this.data.innerRadius, this.data.radius, this.data.segments, 0, 0, Math.PI * 2 );
-        this.ringEnd.translate(0, 0, this.data.length);
-        this.ringEnd.rotateX(-Math.PI/2);
+        this.ringEnd.translate(0, 0, this.data.length/2);
         this.geoms = [this.outerLathe, this.innerLathe, this.ringStart, this.ringEnd];
 
         this.mergeGeometry = new THREE.Geometry();

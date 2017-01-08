@@ -4,29 +4,29 @@
     <meta charset="utf-8">
     <title>Spacestaion builder</title>
     <script src="js/greensock/TweenLite.js"></script>
-    <script src="js/aframe.js"></script>
+    <script src="js/aframe/aframe.js"></script>
     <script src="js/components/tube.js"></script>
+    <script src="js/components/spacestation-body.js"></script>
 </head>
 <body>
 <div id="terminal">
 
 </div>
 <a-scene antialias="true">
-    <a-entity id="station" rotation="60 40 0">
-        <a-entity id="body">
-            <a-entity id="tube1" tube="radius:3; innerRadius:2; length:0.2; segments:16"></a-entity>
-            <a-box width="0.1" height="0.1" depth="0.1" position="0 0 -1.4"></a-box>
-            <a-animation attribute="rotation"
-                         dur="10000"
-                         easing="linear"
-                         fill="forwards"
-                         to="0 360 0"
-                         repeat="indefinite"></a-animation>
-        </a-entity>
+
+    <a-entity id="station" spacestation-body="length:5000">
+        <a-box id="person" width="10" height="20" depth="5" position="0 -2390 0"></a-box>
+        <a-animation attribute="rotation"
+                     dur="60000"
+                     easing="linear"
+                     fill="forwards"
+                     to="0 0 360"
+                     repeat="indefinite"></a-animation>
     </a-entity>
-    <a-sky color="#ECECEC"></a-sky>
-    <a-entity id="player" position="0 0 5">
-        <a-camera user-height="0" wsad-controls-enabled></a-camera>
+
+    <a-sky color="#ECECEC" radius="30000"></a-sky>
+    <a-entity id="player" position="-4000 0 10000" rotation="0 -25 0">
+        <a-entity camera="far:50000; near:1; fov:45" look-controls wasd-controls="acceleration:50000; easing:10; fly:true"></a-entity>
     </a-entity>
 </a-scene>
 
@@ -37,12 +37,26 @@
     } else {
         scene.addEventListener('loaded', run);
     }
+
     function run() {
-        var tube = scene.querySelector('#tube1');
-        var tweenValues = {
-            radius: tube.getAttribute("tube").radius,
-            innerRadius: tube.getAttribute("tube").innerRadius
+        setTimeout(function(){
+            animateStation();
+        }, 2000);
+    }
+
+    function animateStation(){
+        var station = scene.querySelector("#station");
+        var body = station.getAttribute("spacestation-body");
+        var vals = {
+            length: body.length,
+            radius: body.radius
         };
+        TweenLite.to(vals, 1, {radius:400, length:500, ease:Quad.easeInOut, onUpdate:function(){
+            station.setAttribute("spacestation-body", {
+                length: vals.length,
+                radius: vals.radius
+            });
+        }});
     }
 </script>
 
