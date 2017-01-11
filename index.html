@@ -5,27 +5,24 @@
     <title>Spacestaion builder</title>
     <script src="js/greensock/TweenLite.js"></script>
     <script src="js/aframe/aframe.js"></script>
-    <script src="js/components/tube.js"></script>
+    <script src="js/aframe/aframe-physics-system.min.js"></script>
+    <script src="js/components/a-pipe.js"></script>
     <script src="js/components/spacestation-body.js"></script>
 </head>
 <body>
 <div id="terminal">
 
 </div>
-<a-scene antialias="true">
+<a-scene antialias="true" physics="gravity:0">
 
     <a-entity id="station" spacestation-body="length:5000">
         <a-box id="person" width="10" height="20" depth="5" position="0 -2390 0"></a-box>
-        <a-animation attribute="rotation"
-                     dur="60000"
-                     easing="linear"
-                     fill="forwards"
-                     to="0 0 360"
-                     repeat="indefinite"></a-animation>
     </a-entity>
+    <a-sphere dynamic-body radius="100" position="0 2000 1500" color="red"></a-sphere>
+    <a-box dynamic-body width="200" height="200" depth="200" position="-200 1980 2000" color="#996633"></a-box>
 
     <a-sky color="#ECECEC" radius="30000"></a-sky>
-    <a-entity id="player" position="-4000 0 10000" rotation="0 -25 0">
+    <a-entity id="player" position="-1000 2000 10000" rotation="0 -10 0">
         <a-entity camera="far:50000; near:1; fov:45" look-controls wasd-controls="acceleration:50000; easing:10; fly:true"></a-entity>
     </a-entity>
 </a-scene>
@@ -40,7 +37,10 @@
 
     function run() {
         setTimeout(function(){
-            animateStation();
+//            scene.querySelector("#station").setAttribute("spacestation-body", {radius: 800});
+//            scene.querySelector("#player").setAttribute("position", "-400 800 8000");
+//            scene.querySelector("#body").setAttribute("position", "0 700 0");
+//            animateStation();
         }, 2000);
     }
 
