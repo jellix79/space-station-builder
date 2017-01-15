@@ -29,7 +29,6 @@ AFRAME.registerComponent('spacestation-body', {
                 segments: this.data.segments
             });
             layer.setAttribute("rotation", "90 0 0");
-            //layer.setAttribute("static-body", "");
             this.layers.push(layer);
             this.el.appendChild(layer);
         }
