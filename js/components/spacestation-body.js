@@ -4,7 +4,7 @@ AFRAME.registerComponent('spacestation-body', {
     schema: {
         length: {type: "number", default: 5000},
         radius: {type: "number", default: 2500},
-        segments: {type: "int", default: 360}
+        segments: {type: "int", default: 180}
     },
 
     buildLayers: function () {
@@ -29,10 +29,23 @@ AFRAME.registerComponent('spacestation-body', {
                 segments: this.data.segments
             });
             layer.setAttribute("rotation", "90 0 0");
-            layer.setAttribute("static-body", "");
+            //layer.setAttribute("static-body", "");
             this.layers.push(layer);
             this.el.appendChild(layer);
         }
+
+        var rigidLayer = document.createElement("a-cylinder");
+        rigidLayer.setAttribute("height", -this.data.length);
+        rigidLayer.setAttribute("material", "opacity:0");
+        rigidLayer.setAttribute("open-ended", true);
+        rigidLayer.setAttribute("radius", this.data.radius);
+        rigidLayer.setAttribute("rotation", "90 0 0");
+        rigidLayer.setAttribute("segments-radial", this.data.segments);
+        rigidLayer.setAttribute("static-body", "");
+        //rigidLayer.object3D.children[0].visibility = false;
+
+        rigidLayer.className = "layer";
+        this.el.appendChild(rigidLayer);
 
         this.buildWalls();
     },
@@ -41,7 +54,7 @@ AFRAME.registerComponent('spacestation-body', {
         var angleRad = 0;
         var angleDeg = 0;
         var numWalls = 16;
-        var wallHeight = this.data.radius / 4;
+        var wallHeight = this.data.radius / 5;
         var radius = this.data.radius - wallHeight / 2;
         var stepRad = (Math.PI * 2) / numWalls;
         var stepDeg = 360 / numWalls;
@@ -97,7 +110,6 @@ AFRAME.registerComponent('spacestation-body', {
         this.rotationStartTime = Date.now();
         this.degreeAt60Seconds = (Math.sqrt(this.gravityForce/this.data.radius))*(180/Math.PI)*60;
         this.degreeAt60Seconds *= 4; //speed up for tests
-        console.log("degree in 60 seconds: "+this.degreeAt60Seconds);
         this.buildLayers();
         this.person = this.el.querySelector("#person");
         if (this.person != null) {

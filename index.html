@@ -8,22 +8,24 @@
     <script src="js/aframe/aframe-physics-system.min.js"></script>
     <script src="js/components/a-pipe.js"></script>
     <script src="js/components/spacestation-body.js"></script>
+    <script src="js/terminal/terminal.js"></script>
 </head>
 <body>
 <div id="terminal">
 
 </div>
-<a-scene antialias="true" physics="gravity:0">
+<a-scene antialias="true" physics="gravity:0; iterations:1000; maxInterval:0.01">
 
     <a-entity id="station" spacestation-body="length:5000">
         <a-box id="person" width="10" height="20" depth="5" position="0 -2390 0"></a-box>
     </a-entity>
-    <a-sphere dynamic-body radius="100" position="0 2000 1500" color="red"></a-sphere>
-    <a-box dynamic-body width="200" height="200" depth="200" position="-200 1980 2000" color="#996633"></a-box>
+    <a-sphere id="dummySphere" dynamic-body radius="100" position="0 2000 1500" color="#997722"></a-sphere>
+    <a-box dynamic-body width="200" height="200" depth="200" position="-300 1980 2000" color="#996633"></a-box>
 
     <a-sky color="#ECECEC" radius="30000"></a-sky>
-    <a-entity id="player" position="-1000 2000 10000" rotation="0 -10 0">
-        <a-entity camera="far:50000; near:1; fov:45" look-controls wasd-controls="acceleration:50000; easing:10; fly:true"></a-entity>
+    <a-entity id="player" position="-600 1800 10000" rotation="-10 -10 0">
+        <a-entity camera="far:50000; near:1; fov:45" look-controls
+                  wasd-controls="acceleration:50000; easing:10; fly:true"></a-entity>
     </a-entity>
 </a-scene>
 
@@ -36,7 +38,7 @@
     }
 
     function run() {
-        setTimeout(function(){
+        setTimeout(function () {
 //            scene.querySelector("#station").setAttribute("spacestation-body", {radius: 800});
 //            scene.querySelector("#player").setAttribute("position", "-400 800 8000");
 //            scene.querySelector("#body").setAttribute("position", "0 700 0");
@@ -44,19 +46,21 @@
         }, 2000);
     }
 
-    function animateStation(){
+    function animateStation() {
         var station = scene.querySelector("#station");
         var body = station.getAttribute("spacestation-body");
         var vals = {
             length: body.length,
             radius: body.radius
         };
-        TweenLite.to(vals, 1, {radius:400, length:500, ease:Quad.easeInOut, onUpdate:function(){
-            station.setAttribute("spacestation-body", {
-                length: vals.length,
-                radius: vals.radius
-            });
-        }});
+        TweenLite.to(vals, 1, {
+            radius: 400, length: 500, ease: Quad.easeInOut, onUpdate: function () {
+                station.setAttribute("spacestation-body", {
+                    length: vals.length,
+                    radius: vals.radius
+                });
+            }
+        });
     }
 </script>
 
